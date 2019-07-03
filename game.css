@@ -11,3 +11,10 @@ canvas{
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@font-face {
+    font-family: font1;
+    src: url('assets/fonts/forced_square.ttf');
+    font-weight: 800;
+    font-weight: normal;
+}
