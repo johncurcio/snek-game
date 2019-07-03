@@ -1,4 +1,5 @@
 import SnekScene from './SnekScene.js';
+import HomeScene from './HomeScene.js';
 
 window.onload = function(){
     var config = {
@@ -9,7 +10,7 @@ window.onload = function(){
             height: 1334
         },
         backgroundColor: '#9AC503',
-        scene : [ SnekScene ]
+        scene : [ HomeScene, SnekScene ]
     };
 
     var game = new Phaser.Game(config);

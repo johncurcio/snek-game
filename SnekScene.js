@@ -31,12 +31,8 @@ class SnekScene extends Phaser.Scene {
     preload(){
         this.load.image('food', 'assets/food.png');
         this.load.image('body', 'assets/body.png');
-        this.load.audio('eat', 'assets/audio/eat.wav', {
-            instances: 1
-        });
-        this.load.audio('gameover', 'assets/audio/gameover.wav', {
-            instances: 1
-        });
+        this.load.audio('eat', 'assets/audio/eat.wav', { instances: 1 });
+        this.load.audio('gameover', 'assets/audio/gameover.wav', { instances: 1 });
     }
 
     create(){
@@ -108,9 +104,9 @@ class SnekScene extends Phaser.Scene {
         var initX = parseInt(gameOptions.initRectX / gameOptions.frameRate) + 1;
         var initY = parseInt(gameOptions.initRectY / gameOptions.frameRate) + 1;
 
-        for (let y = 0; y < Y; y++){
+        for (let y = 0; y < Y + 1; y++){
             grid[y] = [];
-            for (let x = 0; x < X; x++){
+            for (let x = 0; x < X + 1; x++){
                 grid[y][x] = true;
             }
         }
