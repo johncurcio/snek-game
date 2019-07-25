@@ -28,6 +28,23 @@ class Snake {
         }
     }
 
+    changeDirection(time){
+        switch(this.heading){
+            case LEFT:
+                this.faceUp();
+                break;
+            case RIGHT:
+                this.faceDown();
+                break;
+            case UP:
+                this.faceRight();
+                break;
+            case DOWN:
+                this.faceLeft();
+                break;
+        }
+    }
+
     move(time){
         switch(this.heading){
             case LEFT:

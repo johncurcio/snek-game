@@ -10,7 +10,7 @@ window.onload = function(){
             height: 1334
         },
         backgroundColor: '#9AC503',
-        scene : [ HomeScene, SnekScene ]
+        scene : [ SnekScene ]
     };
 
     var game = new Phaser.Game(config);

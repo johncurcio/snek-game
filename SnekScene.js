@@ -80,6 +80,10 @@ class SnekScene extends Phaser.Scene {
             return;
         }
 
+        this.input.on('pointerdown', function () {
+            this.snake.changeDirection();
+        }, this);
+
         if (this.cursors.left.isDown) {
             this.snake.faceLeft();
         } else if (this.cursors.right.isDown){
