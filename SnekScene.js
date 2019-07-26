@@ -20,7 +20,11 @@ var gameOptions = {
     height: 1334,
 
     initRectX: 50,
-    initRectY: 100
+    initRectY: 100,
+
+    //special food constants
+    specialFoodCount: 5,
+    foodEatenCount: 5
 }
 
 class SnekScene extends Phaser.Scene {
@@ -119,7 +123,7 @@ class SnekScene extends Phaser.Scene {
             this.snake.faceDown();
         }
 
-        if (this.foodCount >= 3){
+        if (this.foodCount >= gameOptions.foodEatenCount){
             let specialFood = Phaser.Math.RND.pick(this.specialFoodArr);
             this.specialFoodSpawn(specialFood);
         }
@@ -160,19 +164,19 @@ class SnekScene extends Phaser.Scene {
         if (this.timer.repeatCount <= 0){
             specialFood.setPosition(-20 , -30);
             this.foodCount = 0;
-            this.timeText.alpha = 0;
-            this.foodImage.alpha = 0;
+            this.timeText.alpha = 0; // erases the timeText
+            this.foodImage.alpha = 0; // erases the foodImage
         }
     }
 
     specialFoodSpawn(specialFood){
-        this.timeText.alpha = 1;
+        this.timeText.alpha = 1; // make timeText visible
         this.foodImage = this.add.image(gameOptions.width-gameOptions.initRectX-120, 
             gameOptions.initRectY-30, specialFood.foodType);
         this.foodImage.scale = 2;
         this.foodImage.alpha = 1;
         specialFood.setPosition(20 * gameOptions.frameRate , 30 * gameOptions.frameRate);
-        this.countDownTimer(5, specialFood);
+        this.countDownTimer(gameOptions.specialFoodCount, specialFood);
         this.foodCount = 0;
     }
 
