@@ -18,3 +18,6 @@ The game will start at port 3000 on localhost.
 
 ![snek game](_docs/demo.gif)
 
+# About me
+
+Check out [curcio.dev](https://curcio.dev)
