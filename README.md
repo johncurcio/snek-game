@@ -16,5 +16,5 @@ The game will start at port 3000 on localhost.
 
 # Demo
 
-![snek game](_docs/screenshot.png)
+![snek game](_docs/demo.gif)
 
