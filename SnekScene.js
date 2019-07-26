@@ -186,6 +186,8 @@ class SnekScene extends Phaser.Scene {
             this.updateScore(this.spider);
             specialFood.setPosition(-20 , -30);
             this.resetTimer();
+            this.timeText.alpha = 0; // erases the timeText
+            this.foodImage.alpha = 0; // erases the foodImage
         }
     }
 
