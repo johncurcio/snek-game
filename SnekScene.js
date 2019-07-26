@@ -30,20 +30,41 @@ class SnekScene extends Phaser.Scene {
 
     preload(){
         this.load.image('food', 'assets/food.png');
+        this.load.image('spider', 'assets/spider.png');
+        this.load.image('alien', 'assets/alien.png');
+        this.load.image('ship', 'assets/ship.png');
         this.load.image('body', 'assets/body.png');
         this.load.audio('eat', 'assets/audio/eat.wav', { instances: 1 });
         this.load.audio('gameover', 'assets/audio/gameover.wav', { instances: 1 });
     }
 
     create(){
+        this.foodCount = 0;
         this.score = 0;
+        
+        //timer
+        this.resetTimer();
+        this.timeText = this.add.text(gameOptions.width-gameOptions.initRectX-75, gameOptions.initRectY-80
+            , this.pad(this.timer.repeatCount, 2), {
+            fontFamily: 'font1',
+            fontSize: '100px',
+            color: '#000'
+        });
+        this.timeText.alpha = 0;
+
         this.scoreText = this.add.text(gameOptions.initRectX, gameOptions.initRectY-80, this.pad(this.score, 4), {
             fontFamily: 'font1',
             fontSize: '100px',
             color: '#000'
         });
 
-        this.food = new Food(this, 30, 20, gameOptions);
+        // food types
+        this.food = new Food(this, 30, 20, gameOptions, 'food');
+        this.spider = new Food(this, -30, -20, gameOptions, 'spider');
+        this.alien = new Food(this, -30, -20, gameOptions, 'alien');
+        this.ship = new Food(this, -30, -20, gameOptions, 'ship');
+        this.specialFoodArr = [this.spider, this.alien, this.ship];
+
         this.snake = new Snake(this, 20, 20, gameOptions);
         this.cursors = this.input.keyboard.createCursorKeys();
         var graphics = this.add.graphics({ 
@@ -64,8 +85,8 @@ class SnekScene extends Phaser.Scene {
         this.scene.start("Snek");
     }
 
-    updateScore(){
-        this.score += 5;
+    updateScore(food){
+        this.score += food.worth();
         this.scoreText.setText(this.pad(this.score, 4));
     }
 
@@ -93,18 +114,70 @@ class SnekScene extends Phaser.Scene {
         } else if (this.cursors.down.isDown) {
             this.snake.faceDown();
         }
+
+        if (this.foodCount >= 3){
+            let specialFood = Phaser.Math.RND.pick(this.specialFoodArr);
+            this.specialFoodSpawn(specialFood);
+        }
         
+        // should be a function
         if (this.snake.update(time)) {
             if (this.snake.collide(this.food)){
+                this.foodCount += 1;
                 this.sound.play('eat');
-                this.updateScore();
+                this.updateScore(this.food);
                 this.placeFood(gameOptions.scaleX-1, gameOptions.scaleY-1);
             }
+
+            this.collideSpecialFood(this.spider);
+            this.collideSpecialFood(this.alien);
+            this.collideSpecialFood(this.ship);
+        }
+
+        if (this.timer.repeatCount >= 0) {
+            this.timeText.setText(this.pad(this.timer.repeatCount, 2));
+        }
+    }
+
+    resetTimer(){
+        this.timer = this.time.addEvent({ delay: 1000, callbackScope: this, repeat: 0 });
+    }
+
+    countDownTimer(count, specialFood){
+        this.timer = this.time.addEvent({ 
+            delay: 1000, 
+            callback: () => this.onEvent(specialFood), 
+            callbackScope: this, 
+            repeat: count
+        });
+    }
+
+    onEvent(specialFood){
+        if (this.timer.repeatCount <= 0){
+            specialFood.setPosition(-20 , -30);
+            this.foodCount = 0;
+            this.timeText.alpha = 0;
+        }
+    }
+
+    specialFoodSpawn(specialFood){
+        this.timeText.alpha = 1;
+        specialFood.setPosition(20 * gameOptions.frameRate , 30 * gameOptions.frameRate);
+        this.countDownTimer(5, specialFood);
+        this.foodCount = 0;
+    }
+
+    collideSpecialFood(specialFood){
+        if (this.snake.collide(specialFood)){
+            this.sound.play('eat');
+            this.updateScore(this.spider);
+            specialFood.setPosition(-20 , -30);
+            this.resetTimer();
         }
     }
 
     placeFood(X, Y){
-        var grid = [];
+        var grid = []; // grid with all locations I can place food or not
         var initX = parseInt(gameOptions.initRectX / gameOptions.frameRate) + 1;
         var initY = parseInt(gameOptions.initRectY / gameOptions.frameRate) + 1;
 
