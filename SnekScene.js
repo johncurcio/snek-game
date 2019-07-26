@@ -51,6 +51,10 @@ class SnekScene extends Phaser.Scene {
             color: '#000'
         });
         this.timeText.alpha = 0;
+        this.foodImage = this.add.image(gameOptions.width-gameOptions.initRectX-120, 
+            gameOptions.initRectY-30, 'spider');
+        this.foodImage.scale = 2;
+        this.foodImage.alpha = 0;
 
         this.scoreText = this.add.text(gameOptions.initRectX, gameOptions.initRectY-80, this.pad(this.score, 4), {
             fontFamily: 'font1',
@@ -157,11 +161,16 @@ class SnekScene extends Phaser.Scene {
             specialFood.setPosition(-20 , -30);
             this.foodCount = 0;
             this.timeText.alpha = 0;
+            this.foodImage.alpha = 0;
         }
     }
 
     specialFoodSpawn(specialFood){
         this.timeText.alpha = 1;
+        this.foodImage = this.add.image(gameOptions.width-gameOptions.initRectX-120, 
+            gameOptions.initRectY-30, specialFood.foodType);
+        this.foodImage.scale = 2;
+        this.foodImage.alpha = 1;
         specialFood.setPosition(20 * gameOptions.frameRate , 30 * gameOptions.frameRate);
         this.countDownTimer(5, specialFood);
         this.foodCount = 0;
